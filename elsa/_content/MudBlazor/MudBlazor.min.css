@@ -31765,19 +31765,7 @@ nav.mud-navmenu > p.mud-typography {
 }
 
 /*************************** Hide the social media links (top right). *****************************/
-#app > div.mud-layout.mud-drawer-left-clipped-always > header > div > a:nth-child(3) {
-    display: none;
-}
-
-#app > div.mud-layout.mud-drawer-left-clipped-always > header > div > a:nth-child(4) {
-    display: none;
-}
-
-#app > div.mud-layout.mud-drawer-left-clipped-always > header > div > button:nth-child(5) {
-    display: none;
-}
-
-#app > div.mud-layout.mud-drawer-left-clipped-always > header > div > button:nth-child(6) {
+#app > div.mud-layout.mud-drawer-left-clipped-always > header > div > *:not(.magnar-nav-btn) {
     display: none;
 }
 

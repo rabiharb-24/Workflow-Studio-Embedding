@@ -1,0 +1,118 @@
+/*****************************************************
+ * MAGNAR CUSTOM THEME - STATIC TOP NAVIGATION
+ * Converts side drawer to top navigation bar
+ * Shows only: Definitions, Instances
+ *****************************************************/
+
+/* ===========================================
+   1. HIDE THE SIDE DRAWER COMPLETELY
+   =========================================== */
+.mud-drawer,
+.mud-drawer-overlay {
+    display: none !important;
+}
+
+/* Remove the drawer toggle/hamburger button */
+.mud-appbar button[aria-label*="menu"],
+.mud-appbar button[aria-label*="drawer"],
+.mud-appbar .mud-icon-button:first-child {
+    display: none !important;
+}
+
+/* ===========================================
+   2. ADJUST MAIN CONTENT (no left margin)
+   =========================================== */
+.mud-main-content {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+.mud-layout {
+    margin-left: 0 !important;
+}
+
+/* ===========================================
+   3. CREATE TOP NAVIGATION IN APP BAR
+   =========================================== */
+
+/* Style the app bar */
+.mud-appbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+}
+
+.mud-appbar .mud-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 24px;
+}
+
+/* ===========================================
+   4. INJECT TOP NAV BUTTONS VIA CSS
+   Using ::after on the toolbar to add nav links
+   =========================================== */
+
+/* Container for our custom nav */
+.mud-appbar .mud-toolbar::after {
+    content: '';
+    display: flex;
+    flex-grow: 1;
+}
+
+/* ===========================================
+   5. ALTERNATIVE: Show nav items horizontally in appbar
+   If the app has nav items we can repurpose
+   =========================================== */
+
+/* Find and show only specific navigation elements */
+/* This targets MudBlazor's nav structure */
+
+/* Style any existing nav links to look like top nav buttons */
+.mud-appbar .mud-nav-link,
+.mud-appbar a[href*="workflow"] {
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin: 0 4px;
+}
+
+.mud-appbar .mud-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===========================================
+   6. CUSTOM TOP NAV BUTTONS STYLING
+   =========================================== */
+.magnar-nav-btn {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none !important;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.magnar-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    text-decoration: none !important;
+}
+
+.magnar-nav-btn:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Highlight active nav button based on current URL */
+.magnar-nav-btn[href="workflows"]:is([data-active="true"]),
+.magnar-nav-btn[href="workflow-instances"]:is([data-active="true"]) {
+    background-color: rgba(255, 255, 255, 0.25);
+}
