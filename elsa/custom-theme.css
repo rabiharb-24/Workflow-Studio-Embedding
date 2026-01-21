@@ -167,14 +167,13 @@ nav.mud-navmenu > p.mud-typography {
 #magnar-top-nav {
     display: flex;
     gap: 0;
-    margin-left: 0 !important;
-    background-color: #ffffff;
-    position: fixed;
+    background-color: #F4F4F4 !important;
+    position: sticky;
+    margin: 25px 25px 0px !important;
     top: 0;
     left: 0;
     right: 0;
     z-index: 1100;
-    padding: 0 24px;
     height: 48px;
     align-items: center;
     border-bottom: 1px solid #e0e0e0;
