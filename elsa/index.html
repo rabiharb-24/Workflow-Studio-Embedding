@@ -46,24 +46,21 @@
 <script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
 <script src="_framework/blazor.webassembly.js"></script>
 
-<!-- MAGNAR: Custom Top Navigation -->
+<!-- MAGNAR: Custom Top Navigation (HCM Style) -->
 <script>
 (function() {
-    // Wait for Blazor to fully load
     function injectTopNav() {
-        const toolbar = document.querySelector('.mud-appbar .mud-toolbar');
-        if (!toolbar) {
-            setTimeout(injectTopNav, 500);
-            return;
-        }
-        
         // Check if we already injected
-        if (document.getElementById('magnar-top-nav')) return;
+        if (document.getElementById('magnar-top-nav')) return true;
         
-        // Create nav container
+        // Find a place to insert - body or app container
+        const appContainer = document.getElementById('app');
+        if (!appContainer) return false;
+        
+        // Create blue navigation bar
         const nav = document.createElement('div');
         nav.id = 'magnar-top-nav';
-        nav.style.cssText = 'display: flex; gap: 8px; margin-left: 24px;';
+        nav.classList = ['marg-top-start-section'];
         
         // Create Definitions button
         const defBtn = document.createElement('a');
@@ -80,24 +77,67 @@
         nav.appendChild(defBtn);
         nav.appendChild(instBtn);
         
-        // Insert after logo/brand area
-        const logoArea = toolbar.querySelector('a, .mud-typography, img');
-        if (logoArea && logoArea.parentNode === toolbar) {
-            logoArea.after(nav);
-        } else {
-            toolbar.insertBefore(nav, toolbar.children[1] || null);
+        // Insert at the very beginning of body
+        document.body.insertBefore(nav, document.body.firstChild);
+        
+        // Update active state based on current URL
+        updateActiveState();
+        
+        return true;
+    }
+    
+    function updateActiveState() {
+        const currentPath = window.location.pathname;
+        const buttons = document.querySelectorAll('.magnar-nav-btn');
+        buttons.forEach(btn => {
+            const href = btn.getAttribute('href');
+            if (currentPath.includes(href)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+    
+    // Use MutationObserver to watch for DOM changes (Blazor re-renders)
+    function setupObserver() {
+        const observer = new MutationObserver(function(mutations) {
+            // Check if our nav is still present, re-inject if removed
+            if (!document.getElementById('magnar-top-nav')) {
+                injectTopNav();
+            }
+            // Update active state on navigation
+            updateActiveState();
+        });
+        
+        // Observe the entire app container for changes
+        const appContainer = document.getElementById('app');
+        if (appContainer) {
+            observer.observe(appContainer, {
+                childList: true,
+                subtree: true
+            });
         }
     }
     
-    // Start checking after DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => setTimeout(injectTopNav, 1000));
-    } else {
-        setTimeout(injectTopNav, 1000);
+    // Polling function to initially inject and setup observer
+    function init() {
+        if (injectTopNav()) {
+            setupObserver();
+        } else {
+            setTimeout(init, 500);
+        }
     }
     
-    // Also try again after Blazor finishes loading
-    window.addEventListener('load', () => setTimeout(injectTopNav, 2000));
+    // Start after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(init, 1000));
+    } else {
+        setTimeout(init, 1000);
+    }
+    
+    // Also try after full page load
+    window.addEventListener('load', () => setTimeout(init, 1500));
 })();
 </script>
 </body>
