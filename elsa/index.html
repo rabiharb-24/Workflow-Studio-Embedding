@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>Elsa Studio Magnar Customized</title>
+    <base href="/elsa/"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="_content/Elsa.Studio.Shell/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="_content/Elsa.Studio.Shell/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="_content/Elsa.Studio.Shell/favicon-16x16.png">
+    <link rel="manifest" href="_content/Elsa.Studio.Shell/site.webmanifest">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Grandstander:wght@100&display=swap" rel="stylesheet">
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <link href="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.css" rel="stylesheet" />
+    <link href="_content/Radzen.Blazor/css/material-base.css" rel="stylesheet" >
+    <link href="_content/Elsa.Studio.Shell/css/shell.css" rel="stylesheet">
+    <link href="ElsaStudioBlazorWasm.styles.css" rel="stylesheet">
+    
+    <!-- MAGNAR CUSTOM THEME -->
+    <link href="custom-theme.css" rel="stylesheet">
+</head>
+
+<body>
+<div id="app">
+    <div class="loading-splash mud-container mud-container-maxwidth-false">
+        <h5 class="mud-typography mud-typography-h5 mud-primary-text my-6">Loading...</h5>
+    </div>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+<script src="_content/BlazorMonaco/jsInterop.js"></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/loader.js"></script>
+<script src="_content/BlazorMonaco/lib/monaco-editor/min/vs/editor/editor.main.js"></script>
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+<script src="_content/CodeBeam.MudBlazor.Extensions/MudExtensions.min.js"></script>
+<script src="_content/Radzen.Blazor/Radzen.Blazor.js"></script>
+<script src="_framework/blazor.webassembly.js"></script>
+
+<!-- MAGNAR: Custom Top Navigation (HCM Style) -->
+<script>
+(function() {
+    function injectTopNav() {
+        // Check if we already injected
+        if (document.getElementById('magnar-top-nav')) return true;
+        
+        // Find a place to insert - body or app container
+        const appContainer = document.getElementById('app');
+        if (!appContainer) return false;
+        
+        // Create blue navigation bar
+        const nav = document.createElement('div');
+        nav.id = 'magnar-top-nav';
+        nav.classList = ['marg-top-start-section'];
+        
+        // Create Definitions button
+        const defBtn = document.createElement('a');
+        defBtn.href = 'workflows/definitions';
+        defBtn.textContent = 'Definitions';
+        defBtn.className = 'magnar-nav-btn';
+        
+        // Create Instances button
+        const instBtn = document.createElement('a');
+        instBtn.href = 'workflows/instances';
+        instBtn.textContent = 'Instances';
+        instBtn.className = 'magnar-nav-btn';
+        
+        nav.appendChild(defBtn);
+        nav.appendChild(instBtn);
+        
+        // Insert at the very beginning of body
+        document.body.insertBefore(nav, document.body.firstChild);
+        
+        // Update active state based on current URL
+        updateActiveState();
+        
+        return true;
+    }
+    
+    function updateActiveState() {
+        const currentPath = window.location.pathname;
+        const buttons = document.querySelectorAll('.magnar-nav-btn');
+        buttons.forEach(btn => {
+            const href = btn.getAttribute('href');
+            if (currentPath.includes(href)) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+    }
+    
+    // Use MutationObserver to watch for DOM changes (Blazor re-renders)
+    function setupObserver() {
+        const observer = new MutationObserver(function(mutations) {
+            // Check if our nav is still present, re-inject if removed
+            if (!document.getElementById('magnar-top-nav')) {
+                injectTopNav();
+            }
+            // Update active state on navigation
+            updateActiveState();
+        });
+        
+        // Observe the entire app container for changes
+        const appContainer = document.getElementById('app');
+        if (appContainer) {
+            observer.observe(appContainer, {
+                childList: true,
+                subtree: true
+            });
+        }
+    }
+    
+    // Polling function to initially inject and setup observer
+    function init() {
+        if (injectTopNav()) {
+            setupObserver();
+        } else {
+            setTimeout(init, 500);
+        }
+    }
+    
+    // Start after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => setTimeout(init, 1000));
+    } else {
+        setTimeout(init, 1000);
+    }
+    
+    // Also try after full page load
+    window.addEventListener('load', () => setTimeout(init, 1500));
+})();
+</script>
+</body>
+
+</html>

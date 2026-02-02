@@ -1,0 +1,209 @@
+/*****************************************************
+ * MAGNAR CUSTOM THEME - STATIC TOP NAVIGATION
+ * Converts side drawer to top navigation bar
+ * Shows only: Definitions, Instances
+ *****************************************************/
+
+/* ===========================================
+   1. HIDE THE SIDE DRAWER COMPLETELY
+   =========================================== */
+.mud-drawer,
+.mud-drawer-overlay {
+    display: none !important;
+}
+
+/* Remove the drawer toggle/hamburger button */
+.mud-appbar button[aria-label*="menu"],
+.mud-appbar button[aria-label*="drawer"],
+.mud-appbar .mud-icon-button:first-child {
+    display: none !important;
+}
+
+/* ===========================================
+   2. ADJUST MAIN CONTENT (no left margin)
+   =========================================== */
+.mud-main-content {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+.mud-layout {
+    margin-left: 0 !important;
+}
+
+/* ===========================================
+   3. CREATE TOP NAVIGATION IN APP BAR
+   =========================================== */
+
+/* Style the app bar */
+.mud-appbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+}
+
+.mud-appbar .mud-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 24px;
+}
+
+/* ===========================================
+   4. INJECT TOP NAV BUTTONS VIA CSS
+   Using ::after on the toolbar to add nav links
+   =========================================== */
+
+/* Container for our custom nav */
+.mud-appbar .mud-toolbar::after {
+    content: '';
+    display: flex;
+    flex-grow: 1;
+}
+
+/* ===========================================
+   5. ALTERNATIVE: Show nav items horizontally in appbar
+   If the app has nav items we can repurpose
+   =========================================== */
+
+/* Find and show only specific navigation elements */
+/* This targets MudBlazor's nav structure */
+
+/* Style any existing nav links to look like top nav buttons */
+.mud-appbar .mud-nav-link,
+.mud-appbar a[href*="workflow"] {
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin: 0 4px;
+}
+
+.mud-appbar .mud-nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ===========================================
+   6. CUSTOM TOP NAV BUTTONS STYLING
+   =========================================== */
+.magnar-nav-btn {
+    color: white !important;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 20px;
+    border-radius: 6px;
+    text-decoration: none !important;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+.magnar-nav-btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    text-decoration: none !important;
+}
+
+.magnar-nav-btn:active {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Highlight active nav button based on current URL */
+.magnar-nav-btn[href="workflows"]:is([data-active="true"]),
+.magnar-nav-btn[href="workflow-instances"]:is([data-active="true"]) {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+ /****************** Custom Overrides ********************
+********************************************************/
+/* Hide the elsa logo in nav menu header. */
+.mud-drawer-header {
+    display: none !important;
+}
+/* Hide info alert message when the designer first loads and nav-item is selected. */
+.mud-alert.mud-alert-text-info.mud-elevation-0 {
+    display: none;
+}
+
+.mud-drawer-fixed.mud-drawer-responsive.mud-drawer-clipped-always {
+    top: 0px !important;
+}
+
+nav.mud-navmenu {
+    display: inline;
+}
+
+nav.mud-navmenu > p.mud-typography {
+    display: none;
+}
+
+/*************************** Hide the social media links (top right). *****************************/
+#app > div.mud-layout.mud-drawer-left-clipped-always > header > div > *:not(.magnar-nav-btn) {
+    display: none;
+}
+
+*:hover,
+* {
+    box-shadow: none !important;
+}
+
+:root {
+  --mud-palette-primary: #1A57FD !important;
+  --mud-palette-primary-lighten: #3f72fe !important;
+  --mud-palette-primary-darken: #3f72fe !important;
+}
+
+#app .mud-appbar {
+    display: none;
+}
+
+.mud-popover.mud-paper {
+    background: #fff !important;
+}
+
+#magnar-top-nav {
+    display: flex;
+    gap: 0;
+    background-color: #F4F4F4 !important;
+    position: sticky;
+    margin: 25px 25px 0px !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1100;
+    height: 48px;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.magnar-nav-btn {
+    display: flex;
+}
+
+.magnar-nav-btn {
+    color: #333 !important;
+    background-color: transparent;
+    padding: 12px 20px;
+    border-radius: 0;
+    text-decoration: none !important;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    margin-right: 0;
+    position: relative;
+    height: 100%;
+    border-bottom: 3px solid transparent;
+}
+
+.magnar-nav-btn.active,
+.magnar-nav-btn[data-active="true"] {
+    color: #333 !important;
+    border-color: #5a8dee;
+    background-color: transparent;
+}
